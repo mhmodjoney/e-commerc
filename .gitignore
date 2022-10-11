@@ -1,2 +1,4 @@
-.node_modules
-.sql
+/node_modules
+sql.js
+sql2.js
+.env

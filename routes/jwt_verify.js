@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-
+const Cart = require("../models/Cart");
 
 
 const verifyToken = (req, res, next) => {
@@ -36,10 +36,23 @@ const verifyToken = (req, res, next) => {
       }
     });
   };
-  
+
+  const verifyTokenAndAuthorizationCart =  (req, res, next) => {
+    verifyToken(req, res, async () => {
+      const req_cart= await Cart.findByIdAndUpdate( req.params.id )
+     const user_id_for_cart =req_cart.userId
+
+
+      if (req.token_user.id === "6342b86681582a04eafa2346" || req.token_user.isAdmin) {
+        next();
+      } else {
+        res.status(403).json("You are not alowed to do that!");
+      }
+    });
+  };
   module.exports = {
     verifyToken,
     verifyTokenAndAuthorization,
-    verifyTokenAndAdmin,
+    verifyTokenAndAdmin,verifyTokenAndAuthorizationCart
   };
   

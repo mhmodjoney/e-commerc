@@ -1,15 +1,22 @@
-const product = require("../models/Product");
+const Order = require("../models/Order");
 const router = require("express").Router();
 const {verifyTokenAndAdmin,verifyTokenAndAuthorization}=require("../routes/jwt_verify");
 //add
-router.post("/add",verifyTokenAndAdmin, async (req, res) => {
-    const newProd = new product(req.body);
+router.post("/add", async (req, res) => {
+    const newOrder = new Order({ 
+        title: req.body.title,
+        desc: req.body.desc,
+        img: req.body.img,
+        categories: req.body.categories,
+        size: req.body.size,
+        color: req.body.color,
+        price: req.body.price });
     
     try {
-        const savedUser = await newProd.save();
-        res.status(201).json(savedUser);
+        const savedOrder = await newOrder.save();
+        res.status(201).json(savedOrder);
       } catch (err) {
-        if("title" in err.keyPattern){return res.status(500).json("title alrady exists")}
+        // if("username" in err.keyPattern){return res.status(500).json("username alrady exists")}
         // if("email" in err.keyPattern){return res.status(500).json("email alrady exists")}
         
         return res.status(500).json(err)
@@ -19,7 +26,7 @@ router.post("/add",verifyTokenAndAdmin, async (req, res) => {
 
 // get all
 router.get("/all", async (req, res) => {
-  const u= await product.find()
+  const u= await Order.find()
   res.json(u)
 
 });
@@ -27,7 +34,7 @@ router.get("/all", async (req, res) => {
 //get one
 router.get("/:id", async (req, res) => {
   // const u= await User.find(_id=req.params.id)
-  product.findOne({ '_id': req.params.id },function (err, data) {
+  Order.findOne({ '_id': req.params.id },function (err, data) {
     if (err) return res.status(500).json(err);
     // Prints "Space Ghost is a talk show host".
  
@@ -39,12 +46,14 @@ router.get("/:id", async (req, res) => {
 //update
 router.put("/:id",verifyTokenAndAdmin, async (req, res) => {
 try{
-      const u =await product.findByIdAndUpdate( req.params.id , { $set: req.body }, { new: true });
+      const u =await Order.findByIdAndUpdate( req.params.id , { $set: req.body }, { new: true });
       res.json(u) 
     }
   catch(err){
     res.status(500).json(err) 
   }
+
+
 });
 
 
@@ -53,7 +62,7 @@ try{
 //delete
 router.delete("/:id",verifyTokenAndAdmin, async (req, res) => {
   try{ 
-    const u= await product.findOneAndDelete(req.params.id)
+    const u= await Order.findOneAndDelete(req.params.id)
     res.json("delted") 
   }
   catch(err){
