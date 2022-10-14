@@ -36,6 +36,7 @@ router.get("/:id", async (req, res) => {
   })
 });
 
+
 //update
 router.put("/:id",verifyTokenAndAdmin, async (req, res) => {
 try{
@@ -43,6 +44,7 @@ try{
       res.json(u) 
     }
   catch(err){
+    if("title" in err.keyPattern){return res.status(500).json("title alrady exists")}
     res.status(500).json(err) 
   }
 });

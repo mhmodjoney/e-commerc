@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon index.js",
+    "testsql": "nodemon sql.js",
     "start": "npm index"
   },
   "author": "",

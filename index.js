@@ -24,12 +24,14 @@ const userRoute = require("./routes/user");
 const productRoute = require("./routes/product");
 const cartRoute = require("./routes/cart");
 const OrderRoute = require("./routes/order");
+const sql = require("./sql");
 
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/product", productRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/order", OrderRoute);
+app.use("/sql", sql);
 
 
 
